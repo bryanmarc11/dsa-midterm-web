@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="Secure 60-item Data Structures and Algorithms midterm examination.">
+  <title>DSA Midterm Examination</title>
+  <link rel="preconnect" href="https://api.fontshare.com">
+  <link href="https://api.fontshare.com/v2/css?f[]=satoshi@400,500,600,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./style.css">
+  <script type="module" src="./app.js"></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to examination</a>
+  <header class="topbar">
+    <a class="brand" href="#home" aria-label="DSA Midterm home">
+      <svg class="brand-mark" viewBox="0 0 40 40" aria-hidden="true"><path d="M8 10h12c7 0 12 4 12 10S27 30 20 30H8V10Z"/><path d="M14 16h6c3 0 5 1 5 4s-2 4-5 4h-6v-8Z"/></svg>
+      <span><strong>DSA Midterm</strong><small>Lessons 1–4 · 60 items</small></span>
+    </a>
+    <div class="top-actions">
+      <span id="save-status" class="save-status" aria-live="polite"></span>
+      <span id="timer" class="timer" hidden>02:30:00</span>
+      <button class="icon-btn" data-theme-toggle aria-label="Switch color theme" title="Switch color theme">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3 7 7 0 0 0 21 12.8Z"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <main id="main">
+    <section id="home-view" class="entry-shell" aria-labelledby="entry-title">
+      <div class="entry-copy">
+        <p class="eyebrow">Data Structures & Algorithms</p>
+        <h1 id="entry-title">Midterm examination</h1>
+        <p>Complete 60 questions covering algorithm fundamentals, asymptotic analysis, arrays, linked lists, stacks, queues, searching, and hashing.</p>
+        <dl class="exam-facts">
+          <div><dt>Duration</dt><dd>150 minutes</dd></div>
+          <div><dt>Total</dt><dd>100 points</dd></div>
+          <div><dt>Attempts</dt><dd>One per student ID</dd></div>
+        </dl>
+      </div>
+      <div class="entry-card">
+        <div class="tabs" role="tablist" aria-label="Exam access">
+          <button class="tab active" data-entry-tab="start" role="tab" aria-selected="true">Start exam</button>
+          <button class="tab" data-entry-tab="resume" role="tab" aria-selected="false">Resume</button>
+        </div>
+        <form id="start-form" class="form-stack">
+          <label>Full name<input name="fullName" autocomplete="name" required minlength="3" maxlength="100"></label>
+          <label>Student ID<input name="studentId" autocomplete="off" required maxlength="40"></label>
+          <label>Program / year / section<input name="section" autocomplete="organization" required maxlength="60"></label>
+          <label class="check-row"><input name="consent" type="checkbox" required><span>I confirm that the information is correct and this is my own work.</span></label>
+          <p class="privacy-note">Your identity and responses are sent to the instructor's Supabase database.</p>
+          <button class="btn primary" type="submit">Begin examination</button>
+          <p id="start-error" class="form-error" role="alert"></p>
+        </form>
+        <form id="resume-form" class="form-stack" hidden>
+          <label>Attempt ID<input name="attemptId" required autocomplete="off"></label>
+          <label>Recovery token<input name="token" required autocomplete="off"></label>
+          <p class="privacy-note">Use the credentials shown after starting the exam.</p>
+          <button class="btn primary" type="submit">Resume examination</button>
+          <p id="resume-error" class="form-error" role="alert"></p>
+        </form>
+      </div>
+    </section>
+
+    <section id="exam-view" class="exam-layout" hidden aria-labelledby="exam-heading">
+      <aside class="exam-sidebar" aria-label="Exam progress">
+        <div class="student-block"><span class="avatar" id="student-initials">ST</span><div><strong id="student-name">Student</strong><small id="student-meta"></small></div></div>
+        <div class="progress-copy"><span>Answered</span><strong id="progress-count">0 / 60</strong></div>
+        <div class="progress-track"><span id="progress-bar"></span></div>
+        <nav id="question-nav" class="question-nav" aria-label="Question numbers"></nav>
+        <div class="legend"><span><i class="dot answered"></i>Answered</span><span><i class="dot current"></i>Current</span></div>
+      </aside>
+      <article class="question-stage">
+        <div class="question-header">
+          <div><p id="question-section" class="eyebrow"></p><h1 id="exam-heading">Question <span id="question-number">1</span></h1></div>
+          <button id="flag-btn" class="btn ghost" type="button" aria-pressed="false">Flag for review</button>
+        </div>
+        <div id="question-content" class="question-card"></div>
+        <div class="exam-controls">
+          <button id="prev-btn" class="btn secondary" type="button">Previous</button>
+          <button id="next-btn" class="btn primary" type="button">Next question</button>
+          <button id="submit-btn" class="btn danger" type="button" hidden>Review & submit</button>
+        </div>
+      </article>
+    </section>
+
+    <section id="success-view" class="status-view" hidden>
+      <div class="status-card"><div class="success-mark">✓</div><p class="eyebrow">Submission received</p><h1>Your answers are safely recorded.</h1><p>The instructor will grade the written and programming responses. Your objective score stays hidden until grading is released.</p><div id="receipt" class="receipt"></div></div>
+    </section>
+
+    <section id="admin-view" class="admin-shell" hidden aria-labelledby="admin-heading">
+      <div class="admin-header"><div><p class="eyebrow">Instructor workspace</p><h1 id="admin-heading">Grade submissions</h1></div><button id="admin-refresh" class="btn secondary">Refresh</button></div>
+      <form id="admin-login" class="inline-login"><label>Instructor key<input name="key" type="password" required></label><button class="btn primary">Open dashboard</button><p id="admin-error" class="form-error" role="alert"></p></form>
+      <div id="admin-dashboard" hidden>
+        <div id="admin-metrics" class="metrics"></div>
+        <div class="table-wrap"><table><thead><tr><th>Student</th><th>Section</th><th>Status</th><th>Objective</th><th>Manual</th><th>Total</th><th>Action</th></tr></thead><tbody id="attempt-rows"></tbody></table></div>
+      </div>
+    </section>
+  </main>
+
+  <dialog id="recovery-dialog"><form method="dialog"><p class="eyebrow">Save before continuing</p><h2>Recovery credentials</h2><p>Copy these values. They are required to resume after refreshing or closing this browser.</p><label>Attempt ID<input id="recovery-id" readonly></label><label>Recovery token<textarea id="recovery-token" readonly rows="3"></textarea></label><button id="copy-recovery" class="btn secondary" type="button">Copy credentials</button><button class="btn primary" value="continue">I saved them — continue</button></form></dialog>
+  <dialog id="submit-dialog"><form method="dialog"><p class="eyebrow">Final check</p><h2>Submit examination?</h2><p id="submit-summary"></p><p>After submission, answers cannot be changed.</p><div class="dialog-actions"><button class="btn secondary" value="cancel">Return to exam</button><button id="confirm-submit" class="btn danger" value="default">Submit now</button></div></form></dialog>
+  <dialog id="grade-dialog"><form id="grade-form" method="dialog"><p class="eyebrow">Manual grading</p><h2 id="grade-student"></h2><div id="grade-answers" class="grade-answers"></div><label>Manual score (0–50)<input name="manualScore" type="number" min="0" max="50" step="1" required></label><label>Feedback<textarea name="feedback" rows="4" maxlength="2000"></textarea></label><input name="id" type="hidden"><div class="dialog-actions"><button class="btn secondary" value="cancel">Cancel</button><button class="btn primary" value="default">Release grade</button></div></form></dialog>
+</body>
+</html>
