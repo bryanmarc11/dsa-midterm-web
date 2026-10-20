@@ -25,7 +25,17 @@ export default async function handler(req, res) {
     if (error) throw error;
     return json(res, 201, { ...data, token, durationMinutes: durationMinutes() });
   } catch (error) {
-    console.error(error);
-    return json(res, 500, { error: 'Could not start the exam. Contact the instructor.' });
+    const reference = randomBytes(6).toString("hex");
+
+    console.error("START_EXAM_ERROR", {
+      reference,
+      code: error?.code || "START_FAILED",
+      message: error?.message || "Unknown startup error",
+      commit: process.env.VERCEL_GIT_COMMIT_SHA?.slice(0, 7)
+    });
+
+    return json(res, 500, {
+      error: `Could not start the exam. Reference: ${reference}`
+    });
   }
 }
