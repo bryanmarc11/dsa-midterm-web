@@ -2,10 +2,52 @@ import { createClient } from '@supabase/supabase-js';
 import { createHash, timingSafeEqual } from 'node:crypto';
 
 export const supabaseAdmin = () => {
-  const url = process.env.SUPABASE_URL;
-  const key = process.env.SUPABASE_SERVICE_ROLE_KEY;
-  if (!url || !key) throw new Error('Server is missing Supabase configuration.');
-  return createClient(url, key, { auth: { persistSession: false, autoRefreshToken: false } });
+  const url = (process.env.SUPABASE_URL || "").trim();
+
+  const key = (
+    process.env.SUPABASE_SECRET_KEY ||
+    process.env.SUPABASE_SERVICE_ROLE_KEY ||
+    ""
+  ).trim();
+
+  if (!url || !key) {
+    throw new Error(
+      "Missing SUPABASE_URL or Supabase server key in Vercel."
+    );
+  }
+
+  // Accept a modern secret key or a legacy service_role key.
+  if (!key.startsWith("sb_secret_")) {
+    let role;
+
+    try {
+      const payload = key.split(".")[1];
+
+      role = JSON.parse(
+        Buffer.from(payload, "base64url").toString("utf8")
+      ).role;
+    } catch {
+      throw new Error(
+        "Invalid server key format. Use a Supabase secret or service_role key."
+      );
+    }
+
+    // This checks the configured key type, not its signature.
+    // Supabase validates the actual credential.
+    if (role !== "service_role") {
+      throw new Error(
+        "Wrong server key: the configured JWT is not service_role."
+      );
+    }
+  }
+
+  return createClient(url, key, {
+    auth: {
+      persistSession: false,
+      autoRefreshToken: false,
+      detectSessionInUrl: false
+    }
+  });
 };
 
 export const json = (res, status, body) => {
